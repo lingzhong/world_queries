@@ -12,7 +12,8 @@ WHERE c1.cid = n.country AND n.neighbor = c2.cid
 AND n.neighbor IN (SELECT cid FROM oceanAccess)
 AND n.neighbor = oa.cid AND oa.oid = o.oid;
 
-SELECT * FROM direct_access 
+INSERT INTO Query4
+(SELECT * FROM direct_access 
 UNION 
-SELECT * FROM indirect_access
+SELECT * FROM indirect_access)
 ORDER BY cname ASC, oname DESC;

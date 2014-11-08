@@ -1,6 +1,4 @@
-
-
-
+DELETE FROM Query8
 
 CREATE VIEW most_popular_language AS
 SELECT l.cid AS cid, l.lid AS lid
@@ -10,7 +8,7 @@ SELECT MAX(l2.lpercentage)
 FROM language l2
 GROUP BY l2.cid);
 
-
+INSERT INTO Query8
 SELECT c1.cname as c1name, c2.cname as c2name, l.lname as lname
 FROM country c1, most_popular_language mpl1, 
 neighbour n, language l,
