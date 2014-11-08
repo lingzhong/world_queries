@@ -51,20 +51,65 @@ public class Assignment2 {
 
     public boolean insertCountry(int cid, String name, int height,
             int population) {
-
-        return false;
+        try {
+            this.sql = this.connection.createStatement();
+            this.sql.executeUpdate("INSERT INTO country VALUES(" + cid + ",\'"
+                    + name + "\'," + height + "," + population + ")");
+            this.sql.close();
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }
+        return true;
     }
 
     public int getCountriesNextToOceanCount(int oid) {
-        return -1;
+        int count;
+        try {
+            this.sql = this.connection.createStatement();
+            this.rs = this.sql.executeQuery("SELECT COUNT(*) FROM "
+                    + "oceanAccess WHERE oid = " + oid);
+            this.rs.next();
+            count = this.rs.getInt(1);
+            this.rs.close();
+            this.sql.close();
+        } catch (SQLException e) {
+            System.err.println(e);
+            return -1;
+        }
+        return count;
     }
 
     public String getOceanInfo(int oid) {
-        return "";
+        String res = "";
+        try {
+            this.sql = this.connection.createStatement();
+            this.rs = this.sql.executeQuery("SELECT * FROM "
+                    + "ocean WHERE oid = " + oid);
+            while (this.rs.next()) {
+                res = this.rs.getInt(1) + ":" + this.rs.getString(2) + ":"
+                        + this.rs.getInt(3);
+            }
+            this.rs.close();
+            this.sql.close();
+        } catch (SQLException e) {
+            System.err.println(e);
+            return "";
+        }
+        return res;
     }
 
     public boolean chgHDI(int cid, int year, float newHDI) {
-        return false;
+        try {
+            this.sql = this.connection.createStatement();
+            this.sql.executeUpdate("UPDATE hdi SET hdi_score = " + newHDI
+                    + " WHERE cid = " + cid + " AND year = " + year);
+            this.sql.close();
+        } catch (SQLException e) {
+            System.err.println(e);
+            return false;
+        }
+        return true;
     }
 
     public boolean deleteNeighbour(int c1id, int c2id) {
@@ -96,13 +141,22 @@ public class Assignment2 {
         Assignment2 a2 = new Assignment2();
         a2.connectDB(LOCAL_HOST_URL + db, usr, "");
         try {
-            Statement stmt = a2.connection.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from country");
-            while (rs.next()) {
-                System.out.println(rs.getInt(1) + " (" + rs.getString(2) + ")");
+            a2.connection.createStatement().executeUpdate(
+                    "DELETE FROM country WHERE cid = 5");
+            a2.insertCountry(5, "Korea", 10, 900);
+            a2.sql = a2.connection.createStatement();
+            a2.rs = a2.sql.executeQuery("select * from country");
+            while (a2.rs.next()) {
+                System.out.println(a2.rs.getInt(1) + " (" + a2.rs.getString(2)
+                        + ")");
             }
-            rs.close();
-            stmt.close();
+            a2.rs.close();
+            a2.sql.close();
+            System.out.println("Number of country near ocean \'2\' is "
+                    + a2.getCountriesNextToOceanCount(2));
+            System.out.println(a2.getOceanInfo(7));
+            System.out.println(a2.getOceanInfo(1));
+            System.out.println(a2.chgHDI(1, 2009, 1));
         } catch (Exception e) {
             System.err.println(e);
         }
