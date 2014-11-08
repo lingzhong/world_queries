@@ -1,6 +1,5 @@
 DELETE FROM Query5;
 
-
 INSERT INTO Query5
 SELECT h.cid AS cid, c.cname AS cname, AVG(hdi_score) AS avghdi
 FROM hdi h, country c

@@ -14,3 +14,5 @@ WHERE n.country = llc.cid AND n.neighbor = c.cid
 GROUP BY n.country
 HAVING COUNT(n.neighbor) = 1
 ORDER BY c1name ASC;
+
+DROP VIEW landlocked_countries;

@@ -21,7 +21,8 @@ FROM country c1, country c2, neighbour_max_elev n
 WHERE c1.cid=n.country AND c2.cid=n.neighbour
 ORDER BY c1name ASC;
 
-
+DROP VIEW neighbour_elev;
+DROP VIEW neighbour_max_elev;
 
 
 

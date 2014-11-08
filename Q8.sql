@@ -18,3 +18,5 @@ AND mpl2.cid = n.neighbor AND c2.cid = mpl2.cid
 AND mpl1.lid = mpl2.lid and mpl1.lid = l.lid
 GROUP BY c1name, c2name, lname
 ORDER BY lname ASC, c1name DESC;
+
+DROP VIEW most_popular_language;
