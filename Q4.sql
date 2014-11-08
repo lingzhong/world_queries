@@ -18,5 +18,5 @@ UNION
 SELECT * FROM indirect_access)
 ORDER BY cname ASC, oname DESC;
 
-DROP VIEW direct_access;
 DROP VIEW indirect_access;
+DROP VIEW direct_access;

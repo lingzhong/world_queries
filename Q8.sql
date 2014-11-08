@@ -1,4 +1,4 @@
-DELETE FROM Query8
+DELETE FROM Query8;
 
 CREATE VIEW most_popular_language AS
 SELECT l.cid AS cid, l.lid AS lid
