@@ -54,6 +54,12 @@ public class Assignment2 {
             int population) {
         try {
             this.sql = this.connection.createStatement();
+            this.rs = this.sql.executeQuery("SELECT * FROM country "
+                    + "WHERE cid = " + cid);
+            if (this.rs.next()) {
+                this.rs.close();
+                return false;
+            }
             this.sql.executeUpdate("INSERT INTO country VALUES(" + cid + ",\'"
                     + name + "\'," + height + "," + population + ")");
             this.sql.close();
@@ -207,7 +213,8 @@ public class Assignment2 {
         try {
             a2.connection.createStatement().executeUpdate(
                     "DELETE FROM country WHERE cid = 5");
-            a2.insertCountry(5, "Korea", 10, 900);
+            System.out.println(a2.insertCountry(5, "Korea", 10, 900));
+            System.out.println(a2.insertCountry(5, "Korea", 10, 900));
             a2.sql = a2.connection.createStatement();
             a2.rs = a2.sql.executeQuery("select * from country");
             while (a2.rs.next()) {
