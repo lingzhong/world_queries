@@ -23,13 +23,17 @@ public class Assignment2 {
 
     // CONSTRUCTOR
     Assignment2() {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }
 
     // Using the input parameters, establish a connection to be used for this
     // session. Returns true if connection is sucessful
     public boolean connectDB(String URL, String username, String password) {
         try {
-            Class.forName("org.postgresql.Driver");
             this.connection = DriverManager.getConnection(URL, username,
                     password);
         } catch (Exception e) {
@@ -148,6 +152,10 @@ public class Assignment2 {
                 sb.append(this.rs.getString(2) + ":");
                 sb.append((int) (this.rs.getFloat(3) * this.rs.getInt(4)) + "#");
             }
+            // remove trailing #
+            if (sb.length() > 0) {
+                sb.deleteCharAt(sb.length()-1);
+            }
             this.rs.close();
             this.sql.close();
         } catch (SQLException e) {
@@ -198,52 +206,52 @@ public class Assignment2 {
         return true;
     }
 
-    public static void main(String args[]) {
-        if (args.length != 2) {
-            System.out.println("Enter 2 arguments: (assuming no "
-                    + "password is needed for accessing the database)");
-            System.out.println("arg #1: DATABASE_NAME");
-            System.out.println("arg #2: USER_NAME");
-            return;
-        }
-        String db = args[0];
-        String usr = args[1];
-        Assignment2 a2 = new Assignment2();
-        a2.connectDB(LOCAL_HOST_URL + db, usr, "");
-        try {
-            a2.connection.createStatement().executeUpdate(
-                    "DELETE FROM country WHERE cid = 5");
-            System.out.println(a2.insertCountry(5, "Korea", 10, 900));
-            System.out.println(a2.insertCountry(5, "Korea", 10, 900));
-            a2.sql = a2.connection.createStatement();
-            a2.rs = a2.sql.executeQuery("select * from country");
-            while (a2.rs.next()) {
-                System.out.println(a2.rs.getInt(1) + " (" + a2.rs.getString(2)
-                        + ")");
-            }
-            a2.rs.close();
-            a2.sql.close();
-            System.out.println("Number of country near ocean \'2\' is "
-                    + a2.getCountriesNextToOceanCount(2));
-            System.out.println(a2.getOceanInfo(7));
-            System.out.println(a2.getOceanInfo(1));
-            System.out.println(a2.chgHDI(1, 2009, 1));
-            // TODO ask prof if no update is done should return true
-            System.out.println(a2.chgHDI(1, 1, 1));
-            System.out.println(a2.deleteNeighbour(1, 2));
-            System.out.println(a2.listCountryLanguages(1));
-            System.out.println(a2.updateHeight(1, 1)); // Canada
-            System.out.println(a2.updateHeight(100, 1)); // no such cid in table
-            a2.insertCountry(6, "X", 10, 100000002);
-            a2.insertCountry(7, "Y", 10, 100000001);
-            System.out.println(a2.updateDB());
-            a2.connection.createStatement().executeUpdate(
-                    "DELETE FROM country WHERE cid = 6");
-            a2.connection.createStatement().executeUpdate(
-                    "DELETE FROM country WHERE cid = 7");
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-        a2.disconnectDB();
-    }
+//    public static void main(String args[]) {
+//        if (args.length != 2) {
+//            System.out.println("Enter 2 arguments: (assuming no "
+//                    + "password is needed for accessing the database)");
+//            System.out.println("arg #1: DATABASE_NAME");
+//            System.out.println("arg #2: USER_NAME");
+//            return;
+//        }
+//        String db = args[0];
+//        String usr = args[1];
+//        Assignment2 a2 = new Assignment2();
+//        a2.connectDB(LOCAL_HOST_URL + db, usr, "");
+//        try {
+//            a2.connection.createStatement().executeUpdate(
+//                    "DELETE FROM country WHERE cid = 5");
+//            System.out.println(a2.insertCountry(5, "Korea", 10, 900));
+//            System.out.println(a2.insertCountry(5, "Korea", 10, 900));
+//            a2.sql = a2.connection.createStatement();
+//            a2.rs = a2.sql.executeQuery("select * from country");
+//            while (a2.rs.next()) {
+//                System.out.println(a2.rs.getInt(1) + " (" + a2.rs.getString(2)
+//                        + ")");
+//            }
+//            a2.rs.close();
+//            a2.sql.close();
+//            System.out.println("Number of country near ocean \'2\' is "
+//                    + a2.getCountriesNextToOceanCount(2));
+//            System.out.println(a2.getOceanInfo(7));
+//            System.out.println(a2.getOceanInfo(1));
+//            System.out.println(a2.chgHDI(1, 2009, 1));
+//            // TODO ask prof if no update is done should return true
+//            System.out.println(a2.chgHDI(1, 1, 1));
+//            System.out.println(a2.deleteNeighbour(1, 2));
+//            System.out.println(a2.listCountryLanguages(1));
+//            System.out.println(a2.updateHeight(1, 1)); // Canada
+//            System.out.println(a2.updateHeight(100, 1)); // no such cid in table
+//            a2.insertCountry(6, "X", 10, 100000002);
+//            a2.insertCountry(7, "Y", 10, 100000001);
+//            System.out.println(a2.updateDB());
+//            a2.connection.createStatement().executeUpdate(
+//                    "DELETE FROM country WHERE cid = 6");
+//            a2.connection.createStatement().executeUpdate(
+//                    "DELETE FROM country WHERE cid = 7");
+//        } catch (Exception e) {
+//            System.err.println(e);
+//        }
+//        a2.disconnectDB();
+//    }
 }
