@@ -12,3 +12,5 @@ FROM country_border_length cbl
 WHERE cbl.borderslength IN (
 SELECT MAX(borderslength)
 FROM country_border_length);
+
+DROP VIEW country_border_length;
