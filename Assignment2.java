@@ -144,13 +144,14 @@ public class Assignment2 {
         try {
             this.sql = this.connection.createStatement();
             this.rs = this.sql
-                    .executeQuery("SELECT lid, lname, lpercentage, population "
+                    .executeQuery("SELECT lid, lname, (lpercentage * population) AS pop "
                             + "FROM country c, language l "
-                            + "WHERE c.cid = l.cid " + "AND l.cid = " + cid);
+                            + "WHERE c.cid = l.cid " + "AND l.cid = " + cid
+                            + " ORDER BY pop");
             while (this.rs.next()) {
                 sb.append(this.rs.getInt(1) + ":");
                 sb.append(this.rs.getString(2) + ":");
-                sb.append((int) (this.rs.getFloat(3) * this.rs.getInt(4)) + "#");
+                sb.append((int) this.rs.getFloat(3) + "#");
             }
             // remove trailing #
             if (sb.length() > 0) {
